@@ -91,10 +91,10 @@ int main(int argc, char** argv) {
 		goal.y = points[i].y;
 		goal.z = 2.0;
 
-		ROS_INFO("Sent position x: %f, y: %f, z: %f", goal.x, goal.y, goal.z);
-
 		//Send goal
 		client.sendGoal(goal);
+		ROS_INFO("Sent position x: %f, y: %f, z: %f", goal.x, goal.y, goal.z);
+
 		//Wait for maximum 20 seconds
 		bool finished_before_timeout = client.waitForResult(ros::Duration(20));
 		//Check status
