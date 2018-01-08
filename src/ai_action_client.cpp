@@ -19,7 +19,7 @@ void takeOff(ClientType& client) {
 	//Send goal
 	client.sendGoal(goal);
 	//Wait for maximum 20 seconds
-	bool finished_before_timeout = client.waitForResult(ros::Duration(20));
+	bool finished_before_timeout = client.waitForResult();
 	//Check status
 	if(finished_before_timeout) {
 		auto state = client.getState();
@@ -45,7 +45,7 @@ bool land(ClientType& client){
 	//Send goal
 	client.sendGoal(goal);
 	//Wait for maximum 20 seconds
-	bool finished_before_timeout = client.waitForResult(ros::Duration(20));
+	bool finished_before_timeout = client.waitForResult();
 	//Check status
 	if(finished_before_timeout) {
 		auto state = client.getState();

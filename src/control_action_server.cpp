@@ -79,7 +79,7 @@ int main(int argc, char** argv){
 	ros::Rate rate(30.0);
 	server.start();
 
-	ros::Subscriber mocap_sub = n.subscribe("mavros/mocap/pose", 10, mocapCallback);
+	ros::Subscriber mocap_sub = n.subscribe("mavros/local_position/pose", 10, mocapCallback);
 	//ros::Subscriber landed_sub = n.subscribe()
 	ros::Publisher pub = n.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local", 100);	
 
