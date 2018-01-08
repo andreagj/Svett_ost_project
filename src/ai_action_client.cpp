@@ -96,7 +96,7 @@ int main(int argc, char** argv) {
 		ROS_INFO("Sent position x: %f, y: %f, z: %f", goal.x, goal.y, goal.z);
 
 		//Wait for maximum 20 seconds
-		bool finished_before_timeout = client.waitForResult(ros::Duration(20));
+		bool finished_before_timeout = client.waitForResult();
 		//Check status
 		if(finished_before_timeout) {
 			auto state = client.getState();
