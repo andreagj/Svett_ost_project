@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
     roscpp
     actionlib
     actionlib_msgs
+    mavros_msgs
 )
 ## Includes headers in include folder
 catkin_package(

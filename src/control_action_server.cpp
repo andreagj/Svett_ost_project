@@ -1,6 +1,8 @@
 #include <ros/ros.h>
 #include <actionlib/server/simple_action_server.h>
 #include <ascend_msgs/AIInterfaceAction.h>
+#include <mavros_msgs/PositionTarget.h>
+#include <geometry_msgs/PoseStamped.h>
 
 //Typedefs
 using ActionServerType = actionlib::SimpleActionServer<ascend_msgs::AIInterfaceAction>;
@@ -16,7 +18,7 @@ constexpr uint16_t LAND_TYPE = 10744;
 constexpr uint16_t TAKEOFF_TYPE = 6648;
 constexpr uint16_t IDLE_TYPE = 18936;
 
-int state; 
+int state;
 
 
 void newGoalCB(ActionServerType* server){
@@ -31,12 +33,12 @@ void newGoalCB(ActionServerType* server){
 	//Read the goal and to somehting about it
 
 
-	state = goal.type
+	state = goal->type;
 
-	setpoint.position.x = goal.x; 
-	setpoint.position.y = goal.y;
-	setpoint.position.z = goal.z; 
-	setpoint.yaw = -PI/2.0; 
+	setpoint.position.x = goal->x; 
+	setpoint.position.y = goal->y;
+	setpoint.position.z = goal->z; 
+	setpoint.yaw = -3.141593/2.0; 
 
 }
 
@@ -51,9 +53,9 @@ void mocapCallback(const geometry_msgs::PoseStamped& input){
 
 
 bool isGoalCompleted(){
-	if( -0.2 + mocap_pos.position.x > setpoint.position.x || 0.2 + mocap_pos.position.x < setpoint.position.x
-		&& -0.2 + mocap_pos.position.y > setpoint.position.y || 0.2 + mocap_pos.position.y < setpoint.position.y
-		&& -0.2 + mocap_pos.position.z > setpoint.position.z || 0.2 + mocap_pos.position.z < setpoint.position.z){
+	if( -0.2 + mocap_pos.pose.position.x > setpoint.position.x || 0.2 + mocap_pos.pose.position.x < setpoint.position.x
+		&& -0.2 + mocap_pos.pose.position.y > setpoint.position.y || 0.2 + mocap_pos.pose.position.y < setpoint.position.y
+		&& -0.2 + mocap_pos.pose.position.z > setpoint.position.z || 0.2 + mocap_pos.pose.position.z < setpoint.position.z){
 		return true;
 	}else{
 		return false; 
@@ -76,15 +78,15 @@ int main(int argc, char** argv){
 
 	ros::Subscriber mocap_sub = n.subscribe("mavros/mocap/pose", 10, mocapCallback);
 	//ros::Subscriber landed_sub = n.subscribe()
-	pub = n.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local", 100);	
+	ros::Publisher pub = n.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local", 100);	
 
 
 
 	while(ros::ok()){
 
-		ros::spinOnce();c
+		ros::spinOnce();
 
-		switch state{
+		switch (state){
 			case 0: // Land
 				setpoint.type_mask = LAND_TYPE; 
 				break;
@@ -96,7 +98,7 @@ int main(int argc, char** argv){
 				break;
 			case 3: // Idle
 				setpoint.type_mask = IDLE_TYPE;
-				break 
+				break;
 			default: 
 				break; 
 		}
@@ -105,7 +107,7 @@ int main(int argc, char** argv){
 
 		if(isGoalCompleted() && server.isActive()) {
 			ascend_msgs::AIInterfaceResult result;
-			result = true; 
+			result.complete = true; 
 			server.setSucceeded(result);
 		}
 
