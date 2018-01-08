@@ -11,6 +11,8 @@ find_package(catkin REQUIRED COMPONENTS
     ascend_msgs
     geometry_msgs
     roscpp
+    actionlib
+    actionlib_msgs
 )
 ## Includes headers in include folder
 catkin_package(
