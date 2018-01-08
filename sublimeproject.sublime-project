@@ -1,0 +1,33 @@
+{
+	"build_systems":
+    [
+        {
+            "name": "Docker build",
+            "shell": true,
+            "shell_cmd": "docker build .",
+            "working_dir": "${project_path}"
+        },
+        {
+            "name": "catkin_make",
+            "shell": true,
+            "shell_cmd": "catkin_make",
+            "working_dir": "${project_path}/../../"
+        }
+    ],
+    "folders":
+    [
+        {
+            "folder_exclude_patterns":
+            [
+                ".idea",
+                "cmake-build-debug"
+            ],
+            "path": "."
+        }
+    ], 
+    "settings":
+    {
+        "tab_size": 4,
+        "translate_tabs_to_spaces": true
+    }
+}
