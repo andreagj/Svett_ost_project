@@ -10,10 +10,12 @@ struct point_t {
 	float z;
 };
 
-void takeOff(ClientType& client) {
+void takeOff(ClientType& client, point_t point) {
 	ascend_msgs::AIInterfaceGoal goal;
 	//Bruker konstantene definert i .action filen
 	goal.type = ascend_msgs::AIInterfaceGoal::TAKEOFF;
+	goal.x = point.x;
+	goal.y = point.y;
 	goal.z = 2.0; //Takeoff altitude
 
 	//Send goal
@@ -37,10 +39,12 @@ void takeOff(ClientType& client) {
 	}
 }
 
-bool land(ClientType& client){
+bool land(ClientType& client, point_t point){
 	ascend_msgs::AIInterfaceGoal goal;
 	//Bruker konstantene definert i .action filen
 	goal.type = ascend_msgs::AIInterfaceGoal::LAND;
+	goal.x = point.x;
+	goal.y = point.y;
 
 	//Send goal
 	client.sendGoal(goal);
@@ -80,8 +84,9 @@ int main(int argc, char** argv) {
 	point_t point4 = {.x = -4.0, .y = -4.0, .z = 1.0};
 	points.push_back(point4);
 
+	point_t point0 = {.x = 0.0, .y = 0.0, .z = 0.0};
 
-	takeOff(client);
+	takeOff(client, point0);
 	
 	ascend_msgs::AIInterfaceGoal goal;
 
@@ -106,8 +111,8 @@ int main(int argc, char** argv) {
 				
 				ROS_INFO("Result: %i", result_p->complete);
 
-				if (land(client)){
-					takeOff(client);
+				if (land(client, points[i])){
+					takeOff(client, points[i]);
 				}
 
 				//yay it worked!
