@@ -91,6 +91,8 @@ int main(int argc, char** argv) {
 		goal.y = points[i].y;
 		goal.z = 2.0;
 
+		ROS_INFO("Sent position x: %f, y: %f, z: %f", goal.x, goal.y, goal.z);
+
 		//Send goal
 		client.sendGoal(goal);
 		//Wait for maximum 20 seconds

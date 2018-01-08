@@ -40,6 +40,8 @@ void newGoalCB(ActionServerType* server){
 	setpoint.position.z = goal->z; 
 	setpoint.yaw = -3.141593/2.0; 
 
+	ROS_INFO("Received position x: %f, y: %f, z: %f", setpoint.position.x, setpoint.position.y, setpoint.position.z);
+
 }
 
 void preemptCB(ActionServerType* server){
@@ -79,8 +81,6 @@ int main(int argc, char** argv){
 	ros::Subscriber mocap_sub = n.subscribe("mavros/mocap/pose", 10, mocapCallback);
 	//ros::Subscriber landed_sub = n.subscribe()
 	ros::Publisher pub = n.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local", 100);	
-
-
 
 	while(ros::ok()){
 
