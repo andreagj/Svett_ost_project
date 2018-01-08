@@ -55,9 +55,9 @@ void mocapCallback(const geometry_msgs::PoseStamped& input){
 
 
 bool isGoalCompleted(){
-	if( std::fabs(mocap_pos.pose.position.x - setpoint.position.x) < 0.2 
-		&& std::fabs(mocap_pos.pose.position.y - setpoint.position.y) < 0.2 
-		&& std::fabs(mocap_pos.pose.position.z - setpoint.position.z) < 0.2 ){
+	if( std::fabs(mocap_pos.pose.position.x - setpoint.position.x) < 0.3 
+		&& std::fabs(mocap_pos.pose.position.y - setpoint.position.y) < 0.3 
+		&& std::fabs(mocap_pos.pose.position.z - setpoint.position.z) < 0.3 ){
 		ROS_INFO("Drone within limits.");
 		return true;
 	}else{
@@ -112,7 +112,7 @@ int main(int argc, char** argv){
 			server.setSucceeded(result);
 		}
 
-		rate.sleep(); 
+		rate.sleep();
 	}
 }
 
